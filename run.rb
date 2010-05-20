@@ -23,12 +23,12 @@ Dir['*'].each do |fname|
 
   if fname =~ /#{opts[:prefix]}/i
     if fname =~ series_patt
-      puts "Found Season #{$1}, episode #{$2} of #{opts[:title]}"
-      
       series_num = ( opts[:series_num] != '' ? opts[:series_num] : $1 )
       ep_num = ( opts[:series_num] != '' ? $1 : $2 )
       
-      new_name = "#{opts[:title]} - S#{sprintf('%02d', $1.to_i)}E#{sprintf('%02d', $2.to_i)}#{File.extname(fname)}"
+      puts "Found Season #{series_num}, episode #{ep_num} of #{opts[:title]}"
+
+      new_name = "#{opts[:title]} - S#{sprintf('%02d', series_num.to_i)}E#{sprintf('%02d', ep_num.to_i)}#{File.extname(fname)}"
       
       if new_name == fname
         puts " -> properly named already"
