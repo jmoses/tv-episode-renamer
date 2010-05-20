@@ -9,6 +9,7 @@ opts = Trollop::options do
 	opt :title, "'Pretty' title of series (used on new file names)", :type => :string
 	opt :series_regex, "Different regex to use.", :type => :string
 	opt :pretend, "Don't really do anything", :default => false
+	opt :series_num, "Force this series", :type => :string
 end
 
 if opts[:prefix] == '' or opts[:title] == ''
@@ -23,6 +24,9 @@ Dir['*'].each do |fname|
   if fname =~ /#{opts[:prefix]}/i
     if fname =~ series_patt
       puts "Found Season #{$1}, episode #{$2} of #{opts[:title]}"
+      
+      series_num = ( opts[:series_num] != '' ? opts[:series_num] : $1 )
+      ep_num = ( opts[:series_num] != '' ? $1 : $2 )
       
       new_name = "#{opts[:title]} - S#{sprintf('%02d', $1.to_i)}E#{sprintf('%02d', $2.to_i)}#{File.extname(fname)}"
       
