@@ -16,6 +16,10 @@ if opts[:prefix] == '' or opts[:title] == ''
   Trollop.die("Prefix and Title are required.")
 end
 
+if opts[:series_num] == ''
+  opts[:series_num] = nil
+end
+
 series_patt = opts[:series_regex] ? Regexp.new(opts[:series_regex]): %r|S([\d]{1,2})E([\d]{1,2})|i
 
 Dir['*'].each do |fname|
@@ -23,8 +27,8 @@ Dir['*'].each do |fname|
 
   if fname =~ /#{opts[:prefix]}/i
     if fname =~ series_patt
-      series_num = ( opts[:series_num] != '' ? opts[:series_num] : $1 )
-      ep_num = ( opts[:series_num] != '' ? $1 : $2 )
+      series_num = ( opts[:series_num] || $1 )
+      ep_num = ( opts[:series_num] ? $1 : $2 )
       
       puts "Found Season #{series_num}, episode #{ep_num} of #{opts[:title]}"
 
